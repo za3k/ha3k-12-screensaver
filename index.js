@@ -27,7 +27,8 @@ $.fn.addScreensaver = function () {
     // Size correctly
     const depth = this.parents(".screen").length + 1;
     const s = makeScreen()
-    s.css("height", $("body").height()*Math.pow(2, -depth-1));
+    const baseHeight = Math.min($("body").height(), $("body").width()/16*10);
+    s.css("height", baseHeight*Math.pow(2, -depth)+ "px");
     s.css("--border-size", 20*Math.pow(2, -depth) + "px");
     s.css("z-index", depth);
     this.prepend(s);
@@ -55,10 +56,12 @@ function tick() {
 }
 
 function main() {
-    for (var i=0; i<5; i++) {
-      const c = $(".screen:empty")
-      c.addScreensaver();
-    }
+    $("body").prepend(makeScreen())
+    do {
+      s = $(".screen:empty")
+      if (s.width() < 50) break;
+      s.addScreensaver();
+    } while(1);
     setInterval(tick, 10);
 }
 
@@ -67,6 +70,5 @@ function makeScreen() {
 }
 
 $(document).ready((ev) => {
-    $("body").prepend(makeScreen);
     main();
 });
