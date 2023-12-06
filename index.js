@@ -25,9 +25,10 @@ function tickScreen() {
 
 $.fn.addScreensaver = function () {
     // Size correctly
-    const depth = this.parents(".screen").length + 1;
+    const depth = this.parents("body,.screen").length;
     const s = makeScreen()
-    const baseHeight = Math.min($("body").height(), $("body").width()/16*10);
+    const baseHeight = Math.min($("body").height()-$(".footer").height(), $("body").width()/16*10);
+    console.log(depth, baseHeight);
     s.css("height", baseHeight*Math.pow(2, -depth)+ "px");
     s.css("--border-size", 20*Math.pow(2, -depth) + "px");
     s.css("z-index", depth);
@@ -56,7 +57,8 @@ function tick() {
 }
 
 function main() {
-    $("body").prepend(makeScreen())
+    //$("body").prepend(makeScreen())
+    $("body").addScreensaver();
     do {
       s = $(".screen:empty")
       if (s.width() < 50) break;
